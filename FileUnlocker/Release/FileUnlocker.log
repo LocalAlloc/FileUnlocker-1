@@ -1,0 +1,18 @@
+﻿  FileUnlocker.cpp
+D:\source\repos\FileUnlocker\stdafx.h(9,1): warning C4005: '_WIN32_IE': macro redefinition
+  (compiling source file 'FileUnlocker.cpp')
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\sdkddkver.h(269,1):
+  see previous definition of '_WIN32_IE'
+  
+D:\source\repos\FileUnlocker\stdafx.h(10,1): warning C4005: 'WINVER': macro redefinition
+  (compiling source file 'FileUnlocker.cpp')
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\sdkddkver.h(245,1):
+  see previous definition of 'WINVER'
+  
+D:\source\repos\FileUnlocker\FileUnlocker.cpp(12,5): warning C4007: 'WinMain': must be '__stdcall'
+  Generating code
+  1 of 167 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  FileUnlocker.vcxproj -> D:\source\repos\FileUnlocker\Release\FileUnlocker.exe

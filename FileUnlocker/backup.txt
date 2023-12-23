@@ -1,0 +1,97 @@
+		case IDB_CREATE:
+		{
+			TCHAR filePath[MAX_PATH] = { 0 };
+
+			OPENFILENAME openFileName = { 0 };
+			openFileName.lStructSize = sizeof(OPENFILENAME);
+			openFileName.hwndOwner = hWnd;
+			openFileName.lpstrFile = filePath;
+			openFileName.nMaxFile = MAX_PATH;
+			openFileName.lpstrTitle = _T("Select a File");
+			openFileName.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+
+			if (GetOpenFileName(&openFileName))
+			{
+				// Extract the file name and path
+				const TCHAR* fileName = PathFindFileName(filePath);
+				const TCHAR* path = filePath;
+
+				// Add the file name to the ListView control
+				LVITEM lvItem;
+				lvItem.mask = LVIF_TEXT;
+				lvItem.iItem = 0; // or the index at which you want to insert
+				lvItem.iSubItem = 0; // subitem index
+				lvItem.pszText = const_cast<LPTSTR>(fileName);
+
+				if (ListView_InsertItem(hwndListView, &lvItem) != -1)
+				{
+					// Add the path to the ListView control in the next column
+					lvItem.iSubItem = 1;
+					lvItem.pszText = const_cast<LPTSTR>(path);
+
+					if (ListView_SetItem(hwndListView, &lvItem))
+					{
+						// Successfully added the file name and path to the ListView
+					}
+					else
+					{
+						MessageBoxA(NULL, "Failed To Add Path", "Failed!", MB_OK | MB_ICONINFORMATION | MB_TOPMOST);
+					}
+				}
+				else
+				{
+					MessageBoxA(NULL, "Failed To Add File Name", "Failed!", MB_OK | MB_ICONINFORMATION | MB_TOPMOST);
+				}
+			}
+			break;
+		}
+		case IDB_END:
+		{
+			BROWSEINFO browseInfo = { 0 };
+			TCHAR folderPath[MAX_PATH] = { 0 };
+			browseInfo.hwndOwner = hWnd;
+			browseInfo.pidlRoot = NULL;
+			browseInfo.pszDisplayName = folderPath;
+			browseInfo.lpszTitle = _T("Select a Folder");
+			browseInfo.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+
+			LPITEMIDLIST pidl = SHBrowseForFolder(&browseInfo);
+			if (pidl)
+			{
+				if (SHGetPathFromIDList(pidl, folderPath))
+				{
+					// Extract the folder name and path
+					const TCHAR* folderName = PathFindFileName(folderPath);
+					const TCHAR* path = folderPath;
+
+					// Add the folder name to the ListView control
+					LVITEM lvItem;
+					lvItem.mask = LVIF_TEXT;
+					lvItem.iItem = 0; // or the index at which you want to insert
+					lvItem.iSubItem = 0; // subitem index
+					lvItem.pszText = const_cast<LPTSTR>(folderName);
+
+					if (ListView_InsertItem(hwndListView, &lvItem) != -1)
+					{
+						// Add the path to the ListView control in the next column
+						lvItem.iSubItem = 1;
+						lvItem.pszText = const_cast<LPTSTR>(path);
+
+						if (ListView_SetItem(hwndListView, &lvItem))
+						{
+							// Successfully added the folder name and path to the ListView
+						}
+						else
+						{
+							MessageBoxA(NULL, "Failed To Add Path", "Failed!", MB_OK | MB_ICONINFORMATION | MB_TOPMOST);
+						}
+					}
+					else
+					{
+						MessageBoxA(NULL, "Failed To Add Folder Name", "Failed!", MB_OK | MB_ICONINFORMATION | MB_TOPMOST);
+					}
+				}
+				CoTaskMemFree(pidl);
+			}
+			break;
+		}
